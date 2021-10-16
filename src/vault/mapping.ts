@@ -92,4 +92,9 @@ export function handleTransferSingle(event: TransferSingle): void {}
 
 export function handleURI(event: URI): void {}
 
-export function handleUnlock(event: Unlock): void {}
+export function handleUnlock(event: Unlock): void {
+  let spectre = Spectre.load(event.params.id.toString())!;
+
+  spectre.state = 'Unlocked';
+  spectre.save();
+}

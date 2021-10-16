@@ -15,54 +15,49 @@ import {
   SetProtocolFee,
   WithdrawProposal,
 } from '../../generated/Issuer/Issuer';
-import { Issuance } from '../../generated/schema';
+import { Issuance, sERC20, Spectre } from '../../generated/schema';
 
-export function handleAcceptProposal(event: AcceptProposal): void {
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.CLOSE_ROLE(...)
-  // - contract.DECIMALS(...)
-  // - contract.DEFAULT_ADMIN_ROLE(...)
-  // - contract.HUNDRED(...)
-  // - contract.REGISTER_ROLE(...)
-  // - contract.WETH(...)
-  // - contract.bank(...)
-  // - contract.getRoleAdmin(...)
-  // - contract.getRoleMember(...)
-  // - contract.getRoleMemberCount(...)
-  // - contract.hasRole(...)
-  // - contract.issuanceOf(...)
-  // - contract.poolFactory(...)
-  // - contract.priceOf(...)
-  // - contract.proposalFor(...)
-  // - contract.protocolFee(...)
-  // - contract.splitter(...)
-  // - contract.supportsInterface(...)
-  // - contract.twapOf(...)
-  // - contract.vault(...)
+export function handleAcceptProposal(event: AcceptProposal): void {}
+
+export function handleClose(event: Close): void {
+  // let id = event.params.sERC20.toHexString();
+  // let issuance = Issuance.load(id);
+  // issuance.state = 'Closed';
+  // issuance.save();
 }
-
-export function handleClose(event: Close): void {}
 
 export function handleCreateProposal(event: CreateProposal): void {}
 
-export function handleEnableFlashIssuance(event: EnableFlashIssuance): void {}
+export function handleEnableFlashIssuance(event: EnableFlashIssuance): void {
+  let id = event.params.sERC20.toHexString();
+  let issuance = Issuance.load(id)!;
+
+  issuance.flash = true;
+  issuance.save();
+}
 
 export function handleIssue(event: Issue): void {}
 
-export function handleRegister(event: Register): void {}
+export function handleRegister(event: Register): void {
+  let id = event.params.sERC20.toHexString();
+  let serc20 = sERC20.load(id)!;
+  let issuance = new Issuance(id);
+
+  issuance.spectre = serc20.spectre;
+  issuance.state = 'Opened';
+  issuance.guardian = event.params.guardian;
+  issuance.pool = event.params.pool;
+  issuance.poolId = event.params.poolId;
+  issuance.reserve = event.params.reserve;
+  issuance.allocation = event.params.allocation;
+  issuance.fee = event.params.fee;
+  issuance.nbOfProposals = BigInt.fromI32(0);
+  issuance.save();
+
+  let spectre = Spectre.load(serc20.spectre)!;
+  spectre.issuance = id;
+  spectre.save();
+}
 
 export function handleRejectProposal(event: RejectProposal): void {}
 

@@ -149,6 +149,23 @@ export class Spectre extends Entity {
     this.set("broker", Value.fromBytes(value));
   }
 
+  get issuance(): string | null {
+    let value = this.get("issuance");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set issuance(value: string | null) {
+    if (!value) {
+      this.unset("issuance");
+    } else {
+      this.set("issuance", Value.fromString(<string>value));
+    }
+  }
+
   get sale(): string | null {
     let value = this.get("sale");
     if (!value || value.kind == ValueKind.NULL) {
@@ -402,6 +419,15 @@ export class Issuance extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("spectre", Value.fromString(""));
+    this.set("state", Value.fromString(""));
+    this.set("guardian", Value.fromBytes(Bytes.empty()));
+    this.set("pool", Value.fromBytes(Bytes.empty()));
+    this.set("poolId", Value.fromBytes(Bytes.empty()));
+    this.set("reserve", Value.fromBigInt(BigInt.zero()));
+    this.set("allocation", Value.fromBigInt(BigInt.zero()));
+    this.set("fee", Value.fromBigInt(BigInt.zero()));
+    this.set("nbOfProposals", Value.fromBigInt(BigInt.zero()));
+    this.set("flash", Value.fromBoolean(false));
   }
 
   save(): void {
@@ -437,5 +463,86 @@ export class Issuance extends Entity {
 
   set spectre(value: string) {
     this.set("spectre", Value.fromString(value));
+  }
+
+  get state(): string {
+    let value = this.get("state");
+    return value!.toString();
+  }
+
+  set state(value: string) {
+    this.set("state", Value.fromString(value));
+  }
+
+  get guardian(): Bytes {
+    let value = this.get("guardian");
+    return value!.toBytes();
+  }
+
+  set guardian(value: Bytes) {
+    this.set("guardian", Value.fromBytes(value));
+  }
+
+  get pool(): Bytes {
+    let value = this.get("pool");
+    return value!.toBytes();
+  }
+
+  set pool(value: Bytes) {
+    this.set("pool", Value.fromBytes(value));
+  }
+
+  get poolId(): Bytes {
+    let value = this.get("poolId");
+    return value!.toBytes();
+  }
+
+  set poolId(value: Bytes) {
+    this.set("poolId", Value.fromBytes(value));
+  }
+
+  get reserve(): BigInt {
+    let value = this.get("reserve");
+    return value!.toBigInt();
+  }
+
+  set reserve(value: BigInt) {
+    this.set("reserve", Value.fromBigInt(value));
+  }
+
+  get allocation(): BigInt {
+    let value = this.get("allocation");
+    return value!.toBigInt();
+  }
+
+  set allocation(value: BigInt) {
+    this.set("allocation", Value.fromBigInt(value));
+  }
+
+  get fee(): BigInt {
+    let value = this.get("fee");
+    return value!.toBigInt();
+  }
+
+  set fee(value: BigInt) {
+    this.set("fee", Value.fromBigInt(value));
+  }
+
+  get nbOfProposals(): BigInt {
+    let value = this.get("nbOfProposals");
+    return value!.toBigInt();
+  }
+
+  set nbOfProposals(value: BigInt) {
+    this.set("nbOfProposals", Value.fromBigInt(value));
+  }
+
+  get flash(): boolean {
+    let value = this.get("flash");
+    return value!.toBoolean();
+  }
+
+  set flash(value: boolean) {
+    this.set("flash", Value.fromBoolean(value));
   }
 }

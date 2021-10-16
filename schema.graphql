@@ -4,6 +4,12 @@ enum SpectreState {
   Unlocked
 }
 
+enum IssuanceState {
+  Null
+  Opened
+  Closed
+}
+
 enum SaleState {
   Null
   Pending
@@ -24,6 +30,7 @@ type Spectre @entity {
   state: SpectreState!
   vault: Bytes!
   broker: Bytes!
+  issuance: Issuance
   sale: Sale
 }
 
@@ -52,4 +59,13 @@ type Sale @entity {
 type Issuance @entity {
   id: ID! # ERC20 address
   spectre: Spectre!
+  state: IssuanceState!
+  guardian: Bytes!
+  pool: Bytes!
+  poolId: Bytes!
+  reserve: BigInt!
+  allocation: BigInt!
+  fee: BigInt!
+  nbOfProposals: BigInt!
+  flash: Boolean
 }
