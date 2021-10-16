@@ -201,6 +201,57 @@ export class sERC20 extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get name(): string | null {
+    let value = this.get("name");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set name(value: string | null) {
+    if (!value) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(<string>value));
+    }
+  }
+
+  get symbol(): string | null {
+    let value = this.get("symbol");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set symbol(value: string | null) {
+    if (!value) {
+      this.unset("symbol");
+    } else {
+      this.set("symbol", Value.fromString(<string>value));
+    }
+  }
+
+  get cap(): BigInt | null {
+    let value = this.get("cap");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set cap(value: BigInt | null) {
+    if (!value) {
+      this.unset("cap");
+    } else {
+      this.set("cap", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
   get spectre(): string {
     let value = this.get("spectre");
     return value!.toString();
@@ -342,5 +393,49 @@ export class Sale extends Entity {
 
   set escape(value: boolean) {
     this.set("escape", Value.fromBoolean(value));
+  }
+}
+
+export class Issuance extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("spectre", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Issuance entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Issuance entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Issuance", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Issuance | null {
+    return changetype<Issuance | null>(store.get("Issuance", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get spectre(): string {
+    let value = this.get("spectre");
+    return value!.toString();
+  }
+
+  set spectre(value: string) {
+    this.set("spectre", Value.fromString(value));
   }
 }

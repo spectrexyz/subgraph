@@ -1,4 +1,4 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts';
+import { Address, BigInt, log } from '@graphprotocol/graph-ts';
 import {
   Vault,
   ApprovalForAll,
@@ -12,6 +12,8 @@ import {
   URI,
   Unlock,
 } from '../../generated/Vault/Vault';
+
+import { sERC20 as sERC20Contract } from '../../generated/sERC20/sERC20';
 import { NFT, Spectre, sERC20 } from '../../generated/schema';
 
 export function handleApprovalForAll(event: ApprovalForAll): void {
@@ -56,12 +58,9 @@ export function handleEscape(event: Escape): void {}
 
 export function handleFractionalize(event: Fractionalize): void {
   let NFTId = event.params.collection.toHexString() + '#' + event.params.tokenId.toString();
-  let spectreId = event.params.id.toString();
   let sERC20Id = event.params.sERC20.toHexString();
-
+  let spectreId = event.params.id.toString();
   let nft = NFT.load(NFTId);
-  let spectre = Spectre.load(spectreId);
-  let serc20 = sERC20.load(sERC20Id);
 
   if (!nft) {
     nft = new NFT(NFTId);
@@ -70,21 +69,21 @@ export function handleFractionalize(event: Fractionalize): void {
     nft.save();
   }
 
-  if (!serc20) {
-    serc20 = new sERC20(sERC20Id);
-    serc20.spectre = spectreId;
-    serc20.save();
-  }
+  let serc20 = new sERC20(sERC20Id);
+  let contract = sERC20Contract.bind(event.params.sERC20);
+  serc20.name = contract.name();
+  serc20.symbol = contract.symbol();
+  serc20.cap = contract.cap();
+  serc20.spectre = spectreId;
+  serc20.save();
 
-  if (!spectre) {
-    spectre = new Spectre(spectreId);
-    spectre.NFT = NFTId;
-    spectre.sERC20 = sERC20Id;
-    spectre.state = 'Locked';
-    spectre.vault = event.address;
-    spectre.broker = event.params.broker;
-    spectre.save();
-  }
+  let spectre = new Spectre(spectreId);
+  spectre.NFT = NFTId;
+  spectre.sERC20 = sERC20Id;
+  spectre.state = 'Locked';
+  spectre.vault = event.address;
+  spectre.broker = event.params.broker;
+  spectre.save();
 }
 
 export function handleTransferBatch(event: TransferBatch): void {}

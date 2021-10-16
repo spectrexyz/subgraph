@@ -29,6 +29,9 @@ type Spectre @entity {
 
 type sERC20 @entity {
   id: ID! # ERC20 address
+  name: String
+  symbol: String
+  cap: BigInt
   spectre: Spectre!
 }
 
@@ -44,4 +47,9 @@ type Sale @entity {
   nbOfProposals: BigInt!
   flash: Boolean
   escape: Boolean
+}
+
+type Issuance @entity {
+  id: ID! # ERC20 address
+  spectre: Spectre!
 }
