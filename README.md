@@ -26,7 +26,7 @@ For a deeper documentation of spectre ⇌ protocol see [here](https://spectre.xy
 
 ```
 git clone https://github.com/spectrexyz/subgraph.git
-cd protocol && npm install
+cd subgraph && npm install
 ```
 
 ### Scripts
