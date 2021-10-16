@@ -1,0 +1,53 @@
+specVersion: 0.0.2
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Broker
+    network: rinkeby
+    source:
+      address: "0xE0063a885bC7eb184c66933865db0C0e5369faE2"
+      abi: Broker
+      startBlock: 9464366
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - DisableEscape
+        - EnableEscape
+        - EnableFlashBuyout
+        - Register
+      abis:
+        - name: Broker
+          file: Broker/abis/Broker.json
+      eventHandlers:
+        - event: DisableEscape(indexed address)
+          handler: handleDisableEscape
+        - event: EnableEscape(indexed address)
+          handler: handleEnableEscape
+        - event: EnableFlashBuyout(indexed address)
+          handler: handleEnableFlashBuyout
+        - event: Register(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleRegister
+      file: Broker/Broker.wasm
+  - kind: ethereum/contract
+    name: Vault
+    network: rinkeby
+    source:
+      address: "0x4BfDa8ba81cfB378702b502516548a960fbF0438"
+      abi: Vault
+      startBlock: 9464366
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Fractionalize
+      abis:
+        - name: Vault
+          file: Vault/abis/Vault.json
+      eventHandlers:
+        - event: Fractionalize(indexed address,indexed uint256,indexed uint256,address,address)
+          handler: handleFractionalize
+      file: Vault/Vault.wasm

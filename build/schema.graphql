@@ -1,0 +1,47 @@
+enum SpectreState {
+  Null
+  Locked
+  Unlocked
+}
+
+enum SaleState {
+  Null
+  Pending
+  Opened
+  Closed
+}
+
+type NFT @entity {
+  id: ID! # address#id
+  collection: Bytes!
+  tokenId: BigInt!
+}
+
+type Spectre @entity {
+  id: ID!
+  NFT: NFT!
+  sERC20: sERC20!
+  state: SpectreState!
+  vault: Bytes!
+  broker: Bytes!
+  sale: Sale
+}
+
+type sERC20 @entity {
+  id: ID!
+  spectre: Spectre!
+}
+
+type Sale @entity {
+  id: ID!
+  spectre: Spectre!
+  state: SaleState!
+  guardian: Bytes!
+  reserve: BigInt!
+  multiplier: BigInt!
+  opening: BigInt!
+  stock: BigInt!
+  nbOfProposals: BigInt!
+  flash: Boolean
+  escape: Boolean
+}
