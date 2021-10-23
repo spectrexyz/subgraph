@@ -3,46 +3,6 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: sERC20
-    network: rinkeby
-    source:
-      abi: sERC20
-      startBlock: 9464366
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        # - Approval
-        # - Paused
-        # - RoleAdminChanged
-        # - RoleGranted
-        # - RoleRevoked
-        - Snapshot
-        # - Transfer
-        # - Unpaused
-      abis:
-        - name: sERC20
-          file: ./abis/sERC20.json
-      eventHandlers:
-        # - event: Approval(indexed address,indexed address,uint256)
-        #   handler: handleApproval
-        # - event: Paused(address)
-        #   handler: handlePaused
-        # - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-        #   handler: handleRoleAdminChanged
-        # - event: RoleGranted(indexed bytes32,indexed address,indexed address)
-        #   handler: handleRoleGranted
-        # - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
-        #   handler: handleRoleRevoked
-        - event: Snapshot(uint256)
-          handler: handleSnapshot
-        # - event: Transfer(indexed address,indexed address,uint256)
-        #   handler: handleTransfer
-        # - event: Unpaused(address)
-        #   handler: handleUnpaused
-      file: ./src/sERC20/mapping.ts
-  - kind: ethereum/contract
     name: Broker
     network: rinkeby
     source:
@@ -122,19 +82,15 @@ dataSources:
         # - AcceptProposal
         # - Close
         # - CreateProposal
-        # - EnableFlashIssuance
+        - EnableFlashIssuance
         # - Issue
         - Register
-        # - RejectProposal
-        # - RoleAdminChanged
-        # - RoleGranted
-        # - RoleRevoked
-        # - SetBank
-        # - SetProtocolFee
         # - WithdrawProposal
       abis:
         - name: Issuer
           file: ./abis/Issuer.json
+        - name: Pool
+          file: ./abis/Pool.json
       eventHandlers:
         # - event: AcceptProposal(indexed address,indexed uint256)
         #   handler: handleAcceptProposal
@@ -142,24 +98,14 @@ dataSources:
         #   handler: handleClose
         # - event: CreateProposal(indexed address,indexed uint256,indexed address,uint256,uint256,uint256)
         #   handler: handleCreateProposal
-        # - event: EnableFlashIssuance(indexed address)
-        #   handler: handleEnableFlashIssuance
+        - event: EnableFlashIssuance(indexed address)
+          handler: handleEnableFlashIssuance
         # - event: Issue(indexed address,indexed address,uint256,uint256)
         #   handler: handleIssue
         - event: Register(indexed address,indexed address,address,bytes32,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleRegister
         # - event: RejectProposal(indexed address,indexed uint256)
         #   handler: handleRejectProposal
-        # - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-        #   handler: handleRoleAdminChanged
-        # - event: RoleGranted(indexed bytes32,indexed address,indexed address)
-        #   handler: handleRoleGranted
-        # - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
-        #   handler: handleRoleRevoked
-        # - event: SetBank(address)
-        #   handler: handleSetBank
-        # - event: SetProtocolFee(uint256)
-        #   handler: handleSetProtocolFee
         # - event: WithdrawProposal(indexed address,indexed uint256)
         #   handler: handleWithdrawProposal
       file: ./src/issuer/mapping.ts
@@ -175,40 +121,44 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        # - ApprovalForAll
         # - Escape
         - Fractionalize
-        # - RoleAdminChanged
-        # - RoleGranted
-        # - RoleRevoked
-        # - TransferBatch
-        # - TransferSingle
-        # - URI
-        # - Unlock
+        - Unlock
       abis:
         - name: Vault
           file: ./abis/Vault.json
         - name: sERC20
           file: ./abis/sERC20.json
       eventHandlers:
-        # - event: ApprovalForAll(indexed address,indexed address,bool)
-        #   handler: handleApprovalForAll
         # - event: Escape(address,uint256,address)
         #   handler: handleEscape
         - event: Fractionalize(indexed address,indexed uint256,indexed uint256,address,address)
           handler: handleFractionalize
-        # - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-        #   handler: handleRoleAdminChanged
-        # - event: RoleGranted(indexed bytes32,indexed address,indexed address)
-        #   handler: handleRoleGranted
-        # - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
-        #   handler: handleRoleRevoked
-        # - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-        #   handler: handleTransferBatch
-        # - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-        #   handler: handleTransferSingle
-        # - event: URI(string,indexed uint256)
-        #   handler: handleURI
-        # - event: Unlock(indexed uint256,address)
-        #   handler: handleUnlock
+        - event: Unlock(indexed uint256,address)
+          handler: handleUnlock
       file: ./src/vault/mapping.ts
+  - kind: ethereum/contract
+    name: BVault
+    network: rinkeby
+    source:
+      address: '0xba12222222228d8ba445958a75a0704d566bf2c8'
+      abi: BVault
+      startBlock: 9464366
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - PoolBalanceChanged
+        - Swap
+      abis:
+        - name: BVault
+          file: ./abis/BVault.json
+        - name: Pool
+          file: ./abis/Pool.json
+      eventHandlers:
+        - event: PoolBalanceChanged(indexed bytes32,indexed address,address[],int256[],uint256[])
+          handler: handlePoolBalanceChanged
+        - event: Swap(indexed bytes32,indexed address,indexed address,uint256,uint256)
+          handler: handleSwap
+      file: ./src/bvault/mapping.ts

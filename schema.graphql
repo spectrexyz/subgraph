@@ -17,6 +17,8 @@ enum SaleState {
   Closed
 }
 
+# vault-related entities
+
 type NFT @entity {
   id: ID! # address#id
   collection: Bytes!
@@ -34,12 +36,15 @@ type Spectre @entity {
   sale: Sale
 }
 
+# sERC20-related entities
+
 type sERC20 @entity {
   id: ID! # ERC20 address
-  name: String
-  symbol: String
-  cap: BigInt
+  name: String!
+  symbol: String!
+  cap: BigInt!
   spectre: Spectre!
+  pool: Pool
 }
 
 type Sale @entity {
@@ -68,4 +73,47 @@ type Issuance @entity {
   fee: BigInt!
   nbOfProposals: BigInt!
   flash: Boolean
+}
+
+# pool-related entities
+
+type Pool @entity {
+  id: ID! # poolId
+  address: Bytes!
+  sERC20: sERC20!
+  sERC20IsToken0: Boolean!
+  states: [PoolState!]! @derivedFrom(field: "pool")
+  swaps: [Swap!]! @derivedFrom(field: "pool")
+  joins: [Join!]! @derivedFrom(field: "pool")
+}
+
+type Swap @entity {
+  id: ID!
+  pool: Pool!
+  timestamp: BigInt!
+  amounts: [BigInt!]! # sERC20 is always first, ETH second
+}
+
+type Join @entity {
+  id: ID!
+  pool: Pool!
+  timestamp: BigInt!
+  amounts: [BigInt!]! # sERC20 is always first, ETH second
+}
+
+# event PoolBalanceChanged(
+#         bytes32 indexed poolId,
+#         address indexed liquidityProvider,
+#         IERC20[] tokens,
+#         int256[] deltas,
+#         uint256[] protocolFeeAmounts
+#     );
+
+type PoolState @entity {
+  id: ID!
+  pool: Pool!
+  timestamp: BigInt!
+  balances: [BigInt!]! # sERC20 is always first, ETH second
+  weights: [BigInt!]! # sERC20 is always first, ETH second
+  price: BigDecimal!
 }

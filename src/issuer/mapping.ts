@@ -8,14 +8,11 @@ import {
   Issue,
   Register,
   RejectProposal,
-  RoleAdminChanged,
-  RoleGranted,
-  RoleRevoked,
-  SetBank,
-  SetProtocolFee,
   WithdrawProposal,
 } from '../../generated/Issuer/Issuer';
-import { Issuance, sERC20, Spectre } from '../../generated/schema';
+
+import { Issuance, sERC20, Spectre, Pool } from '../../generated/schema';
+import { Pool as PoolContract } from '../../generated/Issuer/Pool'; // move it to vault in the YAML file to fetch the isToken0 thing
 
 export function handleAcceptProposal(event: AcceptProposal): void {}
 
@@ -29,19 +26,30 @@ export function handleClose(event: Close): void {
 export function handleCreateProposal(event: CreateProposal): void {}
 
 export function handleEnableFlashIssuance(event: EnableFlashIssuance): void {
-  let id = event.params.sERC20.toHexString();
-  let issuance = Issuance.load(id)!;
-
-  issuance.flash = true;
-  issuance.save();
+  // we need to invert event ordering and redeploy first
+  // let id = event.params.sERC20.toHexString();
+  // let issuance = Issuance.load(id)!;
+  // issuance.flash = true;
+  // issuance.save();
 }
 
 export function handleIssue(event: Issue): void {}
 
 export function handleRegister(event: Register): void {
   let id = event.params.sERC20.toHexString();
+  let poolId = event.params.poolId.toHexString();
   let serc20 = sERC20.load(id)!;
   let issuance = new Issuance(id);
+  let pool = new Pool(poolId);
+  let _pool = PoolContract.bind(event.params.pool);
+
+  pool.address = event.params.pool;
+  pool.sERC20 = id;
+  pool.sERC20IsToken0 = pool.sERC20IsToken0;
+  pool.save();
+
+  serc20.pool = poolId;
+  serc20.save();
 
   issuance.spectre = serc20.spectre;
   issuance.state = 'Opened';
@@ -60,15 +68,5 @@ export function handleRegister(event: Register): void {
 }
 
 export function handleRejectProposal(event: RejectProposal): void {}
-
-export function handleRoleAdminChanged(event: RoleAdminChanged): void {}
-
-export function handleRoleGranted(event: RoleGranted): void {}
-
-export function handleRoleRevoked(event: RoleRevoked): void {}
-
-export function handleSetBank(event: SetBank): void {}
-
-export function handleSetProtocolFee(event: SetProtocolFee): void {}
 
 export function handleWithdrawProposal(event: WithdrawProposal): void {}
