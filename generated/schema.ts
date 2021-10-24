@@ -407,6 +407,32 @@ export class Sale extends Entity {
   set escape(value: boolean) {
     this.set("escape", Value.fromBoolean(value));
   }
+
+  get proposals(): Array<string> {
+    let value = this.get("proposals");
+    return value!.toStringArray();
+  }
+
+  set proposals(value: Array<string>) {
+    this.set("proposals", Value.fromStringArray(value));
+  }
+
+  get buyout(): string | null {
+    let value = this.get("buyout");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set buyout(value: string | null) {
+    if (!value) {
+      this.unset("buyout");
+    } else {
+      this.set("buyout", Value.fromString(<string>value));
+    }
+  }
 }
 
 export class BuyoutProposal extends Entity {
@@ -510,6 +536,193 @@ export class BuyoutProposal extends Entity {
 
   set expiration(value: BigInt) {
     this.set("expiration", Value.fromBigInt(value));
+  }
+}
+
+export class Buyout extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("sale", Value.fromString(""));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("buyer", Value.fromBytes(Bytes.empty()));
+    this.set("value", Value.fromBigInt(BigInt.zero()));
+    this.set("collateral", Value.fromBigInt(BigInt.zero()));
+    this.set("stock", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Buyout entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Buyout entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Buyout", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Buyout | null {
+    return changetype<Buyout | null>(store.get("Buyout", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get sale(): string {
+    let value = this.get("sale");
+    return value!.toString();
+  }
+
+  set sale(value: string) {
+    this.set("sale", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get buyer(): Bytes {
+    let value = this.get("buyer");
+    return value!.toBytes();
+  }
+
+  set buyer(value: Bytes) {
+    this.set("buyer", Value.fromBytes(value));
+  }
+
+  get value(): BigInt {
+    let value = this.get("value");
+    return value!.toBigInt();
+  }
+
+  set value(value: BigInt) {
+    this.set("value", Value.fromBigInt(value));
+  }
+
+  get collateral(): BigInt {
+    let value = this.get("collateral");
+    return value!.toBigInt();
+  }
+
+  set collateral(value: BigInt) {
+    this.set("collateral", Value.fromBigInt(value));
+  }
+
+  get stock(): BigInt {
+    let value = this.get("stock");
+    return value!.toBigInt();
+  }
+
+  set stock(value: BigInt) {
+    this.set("stock", Value.fromBigInt(value));
+  }
+
+  get claims(): Array<string> {
+    let value = this.get("claims");
+    return value!.toStringArray();
+  }
+
+  set claims(value: Array<string>) {
+    this.set("claims", Value.fromStringArray(value));
+  }
+}
+
+export class Claim extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("buyout", Value.fromString(""));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("holder", Value.fromBytes(Bytes.empty()));
+    this.set("value", Value.fromBigInt(BigInt.zero()));
+    this.set("collateral", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Claim entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Claim entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Claim", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Claim | null {
+    return changetype<Claim | null>(store.get("Claim", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get buyout(): string {
+    let value = this.get("buyout");
+    return value!.toString();
+  }
+
+  set buyout(value: string) {
+    this.set("buyout", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get holder(): Bytes {
+    let value = this.get("holder");
+    return value!.toBytes();
+  }
+
+  set holder(value: Bytes) {
+    this.set("holder", Value.fromBytes(value));
+  }
+
+  get value(): BigInt {
+    let value = this.get("value");
+    return value!.toBigInt();
+  }
+
+  set value(value: BigInt) {
+    this.set("value", Value.fromBigInt(value));
+  }
+
+  get collateral(): BigInt {
+    let value = this.get("collateral");
+    return value!.toBigInt();
+  }
+
+  set collateral(value: BigInt) {
+    this.set("collateral", Value.fromBigInt(value));
   }
 }
 

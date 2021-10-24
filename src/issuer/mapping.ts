@@ -1,4 +1,3 @@
-import { BigInt } from '@graphprotocol/graph-ts';
 import {
   AcceptProposal,
   Close,
@@ -31,7 +30,6 @@ export function handleRegister(event: Register): void {
   issuance.reserve = event.params.reserve;
   issuance.allocation = event.params.allocation;
   issuance.fee = event.params.fee;
-  issuance.nbOfProposals = BigInt.fromI32(0);
   issuance.save();
 
   let _sERC20 = sERC20.load(id)!;

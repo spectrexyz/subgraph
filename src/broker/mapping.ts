@@ -11,7 +11,7 @@ import {
   RejectProposal,
   WithdrawProposal,
 } from '../../generated/Broker/Broker';
-import { BuyoutProposal, Sale, sERC20 } from '../../generated/schema';
+import { Buyout as BuyoutEntity, BuyoutProposal, Claim as ClaimEntity, Sale, sERC20 } from '../../generated/schema';
 
 export function handleRegister(event: Register): void {
   let id = event.params.sERC20.toHexString();
@@ -24,7 +24,6 @@ export function handleRegister(event: Register): void {
   sale.multiplier = event.params.multiplier;
   sale.opening = event.params.opening;
   sale.stock = BigInt.fromI32(0);
-  sale.nbOfProposals = BigInt.fromI32(0);
   sale.flash = false;
   sale.escape = false;
   sale.save();
@@ -58,9 +57,39 @@ export function handleEnableFlashBuyout(event: EnableFlashBuyout): void {
   sale.save();
 }
 
-export function handleBuyout(event: Buyout): void {}
+export function handleBuyout(event: Buyout): void {
+  let id = event.params.sERC20.toHexString();
 
-export function handleClaim(event: Claim): void {}
+  let buyout = new BuyoutEntity(id);
+  buyout.sale = id;
+  buyout.timestamp = event.block.timestamp;
+  buyout.buyer = event.params.buyer;
+  buyout.value = event.params.value;
+  buyout.collateral = event.params.collateral;
+  buyout.stock = event.params.value;
+  buyout.save();
+
+  let sale = Sale.load(id)!;
+  sale.buyout = id;
+  sale.save();
+}
+
+export function handleClaim(event: Claim): void {
+  let id = event.transaction.hash.toHex() + '#' + event.logIndex.toString();
+  let buyoutId = event.params.sERC20.toHexString();
+
+  let claim = new ClaimEntity(id);
+  claim.buyout = buyoutId;
+  claim.timestamp = event.block.timestamp;
+  claim.holder = event.params.holder;
+  claim.value = event.params.value;
+  claim.collateral = event.params.collateral;
+  claim.save();
+
+  let buyout = BuyoutEntity.load(buyoutId)!;
+  buyout.stock = buyout.stock.minus(event.params.value);
+  buyout.save();
+}
 
 export function handleCreateProposal(event: CreateProposal): void {
   let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();

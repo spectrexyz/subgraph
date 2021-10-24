@@ -61,9 +61,10 @@ type Sale @entity {
   multiplier: BigInt!
   opening: BigInt!
   stock: BigInt!
-  nbOfProposals: BigInt!
   flash: Boolean!
   escape: Boolean!
+  proposals: [BuyoutProposal!]! @derivedFrom(field: "sale")
+  buyout: Buyout
 }
 
 type BuyoutProposal @entity {
@@ -77,7 +78,25 @@ type BuyoutProposal @entity {
   expiration: BigInt!
 }
 
-# event CreateProposal(sIERC20 indexed sERC20, uint256 indexed proposalId, address indexed buyer, uint256 value, uint256 collateral, uint256 expiration);
+type Buyout @entity {
+  id: ID!
+  sale: Sale!
+  timestamp: BigInt!
+  buyer: Bytes!
+  value: BigInt!
+  collateral: BigInt!
+  stock: BigInt!
+  claims: [Claim!]! @derivedFrom(field: "buyout")
+}
+
+type Claim @entity {
+  id: ID!
+  buyout: Buyout!
+  timestamp: BigInt!
+  holder: Bytes!
+  value: BigInt!
+  collateral: BigInt!
+}
 
 # issuance-related entities
 
@@ -97,7 +116,6 @@ type Issuance @entity {
   reserve: BigInt!
   allocation: BigInt!
   fee: BigInt!
-  nbOfProposals: BigInt!
   flash: Boolean
   issues: [Issue!]! @derivedFrom(field: "issuance")
   proposals: [IssuanceProposal!]! @derivedFrom(field: "issuance")
