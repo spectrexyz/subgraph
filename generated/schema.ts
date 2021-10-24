@@ -409,6 +409,110 @@ export class Sale extends Entity {
   }
 }
 
+export class BuyoutProposal extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("sale", Value.fromString(""));
+    this.set("state", Value.fromString(""));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("buyer", Value.fromBytes(Bytes.empty()));
+    this.set("value", Value.fromBigInt(BigInt.zero()));
+    this.set("collateral", Value.fromBigInt(BigInt.zero()));
+    this.set("expiration", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save BuyoutProposal entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save BuyoutProposal entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("BuyoutProposal", id.toString(), this);
+    }
+  }
+
+  static load(id: string): BuyoutProposal | null {
+    return changetype<BuyoutProposal | null>(store.get("BuyoutProposal", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get sale(): string {
+    let value = this.get("sale");
+    return value!.toString();
+  }
+
+  set sale(value: string) {
+    this.set("sale", Value.fromString(value));
+  }
+
+  get state(): string {
+    let value = this.get("state");
+    return value!.toString();
+  }
+
+  set state(value: string) {
+    this.set("state", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get buyer(): Bytes {
+    let value = this.get("buyer");
+    return value!.toBytes();
+  }
+
+  set buyer(value: Bytes) {
+    this.set("buyer", Value.fromBytes(value));
+  }
+
+  get value(): BigInt {
+    let value = this.get("value");
+    return value!.toBigInt();
+  }
+
+  set value(value: BigInt) {
+    this.set("value", Value.fromBigInt(value));
+  }
+
+  get collateral(): BigInt {
+    let value = this.get("collateral");
+    return value!.toBigInt();
+  }
+
+  set collateral(value: BigInt) {
+    this.set("collateral", Value.fromBigInt(value));
+  }
+
+  get expiration(): BigInt {
+    let value = this.get("expiration");
+    return value!.toBigInt();
+  }
+
+  set expiration(value: BigInt) {
+    this.set("expiration", Value.fromBigInt(value));
+  }
+}
+
 export class Issuance extends Entity {
   constructor(id: string) {
     super();
@@ -549,6 +653,15 @@ export class Issuance extends Entity {
 
   set issues(value: Array<string>) {
     this.set("issues", Value.fromStringArray(value));
+  }
+
+  get proposals(): Array<string> {
+    let value = this.get("proposals");
+    return value!.toStringArray();
+  }
+
+  set proposals(value: Array<string>) {
+    this.set("proposals", Value.fromStringArray(value));
   }
 }
 

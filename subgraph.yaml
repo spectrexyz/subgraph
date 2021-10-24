@@ -14,58 +14,40 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        # - AcceptProposal
-        # - Buyout
-        # - Claim
-        # - CreateProposal
+        - Register
         - DisableEscape
         - EnableEscape
         - EnableFlashBuyout
-        # - Escape
-        - Register
-        # - RejectProposal
-        # - RoleAdminChanged
-        # - RoleGranted
-        # - RoleRevoked
-        # - SetBank
-        # - SetProtocolFee
-        # - WithdrawProposal
+        - Buyout
+        - Claim
+        - AcceptProposal
+        - CreateProposal
+        - RejectProposal
+        - WithdrawProposal
       abis:
         - name: Broker
           file: ./abis/Broker.json
       eventHandlers:
-        # - event: AcceptProposal(indexed address,indexed uint256)
-        #   handler: handleAcceptProposal
-        # - event: Buyout(indexed address,indexed address,uint256,uint256,uint256)
-        #   handler: handleBuyout
-        # - event: Claim(indexed address,indexed address,uint256,uint256)
-        #   handler: handleClaim
-        # - event: CreateProposal(indexed address,indexed uint256,indexed address,uint256,uint256,uint256)
-        #   handler: handleCreateProposal
+        - event: Register(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleRegister
         - event: DisableEscape(indexed address)
           handler: handleDisableEscape
         - event: EnableEscape(indexed address)
           handler: handleEnableEscape
         - event: EnableFlashBuyout(indexed address)
           handler: handleEnableFlashBuyout
-        # - event: Escape(indexed address,indexed address,bytes)
-        #   handler: handleEscape
-        - event: Register(indexed address,indexed address,uint256,uint256,uint256)
-          handler: handleRegister
-        # - event: RejectProposal(indexed address,indexed uint256)
-        #   handler: handleRejectProposal
-        # - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-        #   handler: handleRoleAdminChanged
-        # - event: RoleGranted(indexed bytes32,indexed address,indexed address)
-        #   handler: handleRoleGranted
-        # - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
-        #   handler: handleRoleRevoked
-        # - event: SetBank(address)
-        #   handler: handleSetBank
-        # - event: SetProtocolFee(uint256)
-        #   handler: handleSetProtocolFee
-        # - event: WithdrawProposal(indexed address,indexed uint256)
-        #   handler: handleWithdrawProposal
+        - event: Buyout(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleBuyout
+        - event: Claim(indexed address,indexed address,uint256,uint256)
+          handler: handleClaim
+        - event: CreateProposal(indexed address,indexed uint256,indexed address,uint256,uint256,uint256)
+          handler: handleCreateProposal
+        - event: AcceptProposal(indexed address,indexed uint256)
+          handler: handleAcceptProposal
+        - event: RejectProposal(indexed address,indexed uint256)
+          handler: handleRejectProposal
+        - event: WithdrawProposal(indexed address,indexed uint256)
+          handler: handleWithdrawProposal
       file: ./src/broker/mapping.ts
   - kind: ethereum/contract
     name: Issuer
@@ -79,31 +61,32 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        # - AcceptProposal
-        # - Close
-        - CreateProposal
-        - EnableFlashIssuance
-        - Issue
         - Register
-        # - WithdrawProposal
+        - Issue
+        - EnableFlashIssuance
+        - Close
+        - CreateProposal
+        - AcceptProposal
+        - RejectProposal
+        - WithdrawProposal
       abis:
         - name: Issuer
           file: ./abis/Issuer.json
         - name: Pool
           file: ./abis/Pool.json
       eventHandlers:
-        - event: AcceptProposal(indexed address,indexed uint256)
-          handler: handleAcceptProposal
-        # - event: Close(address)
-        #   handler: handleClose
-        - event: CreateProposal(indexed address,indexed uint256,indexed address,uint256,uint256,uint256)
-          handler: handleCreateProposal
-        - event: EnableFlashIssuance(indexed address)
-          handler: handleEnableFlashIssuance
-        - event: Issue(indexed address,indexed address,uint256,uint256)
-          handler: handleIssue
         - event: Register(indexed address,indexed address,address,bytes32,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleRegister
+        - event: EnableFlashIssuance(indexed address)
+          handler: handleEnableFlashIssuance
+        - event: Close(address)
+          handler: handleClose
+        - event: Issue(indexed address,indexed address,uint256,uint256)
+          handler: handleIssue
+        - event: AcceptProposal(indexed address,indexed uint256)
+          handler: handleAcceptProposal
+        - event: CreateProposal(indexed address,indexed uint256,indexed address,uint256,uint256,uint256)
+          handler: handleCreateProposal
         - event: RejectProposal(indexed address,indexed uint256)
           handler: handleRejectProposal
         - event: WithdrawProposal(indexed address,indexed uint256)
@@ -121,7 +104,6 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        # - Escape
         - Fractionalize
         - Unlock
       abis:
@@ -130,8 +112,6 @@ dataSources:
         - name: sERC20
           file: ./abis/sERC20.json
       eventHandlers:
-        # - event: Escape(address,uint256,address)
-        #   handler: handleEscape
         - event: Fractionalize(indexed address,indexed uint256,indexed uint256,address,address)
           handler: handleFractionalize
         - event: Unlock(indexed uint256,address)

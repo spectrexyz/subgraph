@@ -1,3 +1,12 @@
+enum ProposalState {
+  Null
+  Pending
+  Accepted
+  Rejected
+  Lapsed
+  Withdrawn
+}
+
 # vault-related entities
 
 enum SpectreState {
@@ -57,21 +66,25 @@ type Sale @entity {
   escape: Boolean!
 }
 
+type BuyoutProposal @entity {
+  id: ID!
+  sale: Sale!
+  state: ProposalState!
+  timestamp: BigInt!
+  buyer: Bytes!
+  value: BigInt!
+  collateral: BigInt!
+  expiration: BigInt!
+}
+
+# event CreateProposal(sIERC20 indexed sERC20, uint256 indexed proposalId, address indexed buyer, uint256 value, uint256 collateral, uint256 expiration);
+
 # issuance-related entities
 
 enum IssuanceState {
   Null
   Opened
   Closed
-}
-
-enum IssuanceProposalState {
-  Null
-  Pending
-  Accepted
-  Rejected
-  Lapsed
-  Withdrawn
 }
 
 type Issuance @entity {
@@ -102,7 +115,7 @@ type Issue @entity {
 type IssuanceProposal @entity {
   id: ID!
   issuance: Issuance!
-  state: IssuanceProposalState!
+  state: ProposalState!
   timestamp: BigInt!
   buyer: Bytes!
   value: BigInt!
