@@ -39,11 +39,11 @@ export function handleRegister(event: Register): void {
 }
 
 export function handleEnableFlashIssuance(event: EnableFlashIssuance): void {
-  // we need to invert event ordering and redeploy first
-  // let id = event.params.sERC20.toHexString();
-  // let issuance = new Issuance(id);
-  // issuance.flash = true;
-  // issuance.save();
+  let id = event.params.sERC20.toHexString();
+  let issuance = Issuance.load(id)!;
+
+  issuance.flash = true;
+  issuance.save();
 }
 
 export function handleCreateProposal(event: CreateProposal): void {
@@ -89,11 +89,11 @@ export function handleWithdrawProposal(event: WithdrawProposal): void {
 }
 
 export function handleClose(event: Close): void {
-  // We need to add an sERC20 params in the close event that we forgot
-  // let id = event.params.sERC20.toHexString();
-  // let issuance = Issuance.load(id);
-  // issuance.state = 'Closed';
-  // issuance.save();
+  let id = event.params.sERC20.toHexString();
+
+  let issuance = Issuance.load(id)!;
+  issuance.state = 'Closed';
+  issuance.save();
 }
 
 export function handleIssue(event: IssueEvent): void {

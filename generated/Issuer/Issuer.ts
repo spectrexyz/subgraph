@@ -45,7 +45,7 @@ export class Close__Params {
     this._event = event;
   }
 
-  get param0(): Address {
+  get sERC20(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 }

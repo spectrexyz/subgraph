@@ -6,9 +6,9 @@ dataSources:
     name: Broker
     network: rinkeby
     source:
-      address: '0xE0063a885bC7eb184c66933865db0C0e5369faE2'
+      address: '0x8024B7B50bF9Fa9CeECDD1D732225Cb2ac7fC7C9'
       abi: Broker
-      startBlock: 9464366
+      startBlock: 9522432
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -53,9 +53,9 @@ dataSources:
     name: Issuer
     network: rinkeby
     source:
-      address: '0x64D5221C37fe62A77266A8b9c113e4B6FEd76a12'
+      address: '0x66C6FF62d17f58DdB12400325F64B7F2B32E551b'
       abi: Issuer
-      startBlock: 9464366
+      startBlock: 9522432
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -79,7 +79,7 @@ dataSources:
           handler: handleRegister
         - event: EnableFlashIssuance(indexed address)
           handler: handleEnableFlashIssuance
-        - event: Close(address)
+        - event: Close(indexed address)
           handler: handleClose
         - event: Issue(indexed address,indexed address,uint256,uint256)
           handler: handleIssue
@@ -98,7 +98,7 @@ dataSources:
     source:
       address: '0x4BfDa8ba81cfB378702b502516548a960fbF0438'
       abi: Vault
-      startBlock: 9464366
+      startBlock: 9522432
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -123,7 +123,7 @@ dataSources:
     source:
       address: '0xba12222222228d8ba445958a75a0704d566bf2c8'
       abi: BVault
-      startBlock: 9464366
+      startBlock: 9522432
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

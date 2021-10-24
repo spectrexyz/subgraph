@@ -287,7 +287,6 @@ export class Sale extends Entity {
     this.set("multiplier", Value.fromBigInt(BigInt.zero()));
     this.set("opening", Value.fromBigInt(BigInt.zero()));
     this.set("stock", Value.fromBigInt(BigInt.zero()));
-    this.set("nbOfProposals", Value.fromBigInt(BigInt.zero()));
     this.set("flash", Value.fromBoolean(false));
     this.set("escape", Value.fromBoolean(false));
   }
@@ -379,15 +378,6 @@ export class Sale extends Entity {
 
   set stock(value: BigInt) {
     this.set("stock", Value.fromBigInt(value));
-  }
-
-  get nbOfProposals(): BigInt {
-    let value = this.get("nbOfProposals");
-    return value!.toBigInt();
-  }
-
-  set nbOfProposals(value: BigInt) {
-    this.set("nbOfProposals", Value.fromBigInt(value));
   }
 
   get flash(): boolean {
@@ -739,7 +729,6 @@ export class Issuance extends Entity {
     this.set("reserve", Value.fromBigInt(BigInt.zero()));
     this.set("allocation", Value.fromBigInt(BigInt.zero()));
     this.set("fee", Value.fromBigInt(BigInt.zero()));
-    this.set("nbOfProposals", Value.fromBigInt(BigInt.zero()));
     this.set("flash", Value.fromBoolean(false));
   }
 
@@ -839,15 +828,6 @@ export class Issuance extends Entity {
 
   set fee(value: BigInt) {
     this.set("fee", Value.fromBigInt(value));
-  }
-
-  get nbOfProposals(): BigInt {
-    let value = this.get("nbOfProposals");
-    return value!.toBigInt();
-  }
-
-  set nbOfProposals(value: BigInt) {
-    this.set("nbOfProposals", Value.fromBigInt(value));
   }
 
   get flash(): boolean {
