@@ -18,7 +18,7 @@ import {
   SetProtocolFee,
   WithdrawProposal,
 } from '../../generated/Broker/Broker';
-import { Sale, NFT, Spectre, sERC20 } from '../../generated/schema';
+import { Sale, sERC20 } from '../../generated/schema';
 
 export function handleAcceptProposal(event: AcceptProposal): void {}
 
@@ -56,10 +56,9 @@ export function handleEscape(event: Escape): void {}
 
 export function handleRegister(event: Register): void {
   let id = event.params.sERC20.toHexString();
-  let serc20 = sERC20.load(id)!;
   let sale = new Sale(id);
 
-  sale.spectre = serc20.spectre;
+  sale.sERC20 = id;
   sale.state = 'Pending';
   sale.guardian = event.params.guardian;
   sale.reserve = event.params.reserve;
@@ -67,23 +66,15 @@ export function handleRegister(event: Register): void {
   sale.opening = event.params.opening;
   sale.stock = BigInt.fromI32(0);
   sale.nbOfProposals = BigInt.fromI32(0);
+  sale.flash = false;
+  sale.escape = false;
   sale.save();
 
-  let spectre = Spectre.load(serc20.spectre)!;
-  spectre.sale = id;
-  spectre.save();
+  let _sERC20 = sERC20.load(id)!;
+  _sERC20.sale = id;
+  _sERC20.save();
 }
 
 export function handleRejectProposal(event: RejectProposal): void {}
-
-export function handleRoleAdminChanged(event: RoleAdminChanged): void {}
-
-export function handleRoleGranted(event: RoleGranted): void {}
-
-export function handleRoleRevoked(event: RoleRevoked): void {}
-
-export function handleSetBank(event: SetBank): void {}
-
-export function handleSetProtocolFee(event: SetProtocolFee): void {}
 
 export function handleWithdrawProposal(event: WithdrawProposal): void {}

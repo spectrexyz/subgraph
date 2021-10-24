@@ -1,23 +1,10 @@
+# vault-related entities
+
 enum SpectreState {
   Null
   Locked
   Unlocked
 }
-
-enum IssuanceState {
-  Null
-  Opened
-  Closed
-}
-
-enum SaleState {
-  Null
-  Pending
-  Opened
-  Closed
-}
-
-# vault-related entities
 
 type NFT @entity {
   id: ID! # address#id
@@ -32,24 +19,33 @@ type Spectre @entity {
   state: SpectreState!
   vault: Bytes!
   broker: Bytes!
-  issuance: Issuance
-  sale: Sale
 }
 
 # sERC20-related entities
 
 type sERC20 @entity {
   id: ID! # ERC20 address
+  spectre: Spectre!
   name: String!
   symbol: String!
   cap: BigInt!
-  spectre: Spectre!
+  sale: Sale
+  issuance: Issuance
   pool: Pool
+}
+
+# buyout-related entities
+
+enum SaleState {
+  Null
+  Pending
+  Opened
+  Closed
 }
 
 type Sale @entity {
   id: ID! # ERC20 address
-  spectre: Spectre!
+  sERC20: sERC20!
   state: SaleState!
   guardian: Bytes!
   reserve: BigInt!
@@ -57,13 +53,21 @@ type Sale @entity {
   opening: BigInt!
   stock: BigInt!
   nbOfProposals: BigInt!
-  flash: Boolean
-  escape: Boolean
+  flash: Boolean!
+  escape: Boolean!
+}
+
+# issuance-related entities
+
+enum IssuanceState {
+  Null
+  Opened
+  Closed
 }
 
 type Issuance @entity {
   id: ID! # ERC20 address
-  spectre: Spectre!
+  sERC20: sERC20!
   state: IssuanceState!
   guardian: Bytes!
   pool: Bytes!
@@ -73,6 +77,16 @@ type Issuance @entity {
   fee: BigInt!
   nbOfProposals: BigInt!
   flash: Boolean
+  issues: [Issue!]! @derivedFrom(field: "issuance")
+}
+
+type Issue @entity {
+  id: ID!
+  issuance: Issuance!
+  timestamp: BigInt!
+  recipient: Bytes!
+  value: BigInt! # ETH
+  amount: BigInt! # sERC20!
 }
 
 # pool-related entities
@@ -87,10 +101,20 @@ type Pool @entity {
   joins: [Join!]! @derivedFrom(field: "pool")
 }
 
+type PoolState @entity {
+  id: ID!
+  pool: Pool!
+  timestamp: BigInt!
+  balances: [BigInt!]! # sERC20 is always first, ETH second
+  weights: [BigInt!]! # sERC20 is always first, ETH second
+  price: BigDecimal! # in ETH per sERC20
+}
+
 type Swap @entity {
   id: ID!
   pool: Pool!
   timestamp: BigInt!
+  from: Bytes!
   amounts: [BigInt!]! # sERC20 is always first, ETH second
 }
 
@@ -98,22 +122,6 @@ type Join @entity {
   id: ID!
   pool: Pool!
   timestamp: BigInt!
+  from: Bytes!
   amounts: [BigInt!]! # sERC20 is always first, ETH second
-}
-
-# event PoolBalanceChanged(
-#         bytes32 indexed poolId,
-#         address indexed liquidityProvider,
-#         IERC20[] tokens,
-#         int256[] deltas,
-#         uint256[] protocolFeeAmounts
-#     );
-
-type PoolState @entity {
-  id: ID!
-  pool: Pool!
-  timestamp: BigInt!
-  balances: [BigInt!]! # sERC20 is always first, ETH second
-  weights: [BigInt!]! # sERC20 is always first, ETH second
-  price: BigDecimal!
 }

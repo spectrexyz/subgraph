@@ -1,6 +1,6 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 import { Vault, ApprovalForAll, Escape, Fractionalize, Unlock } from '../../generated/Vault/Vault';
-import { sERC20 as sERC20Contract } from '../../generated/sERC20/sERC20';
+import { sERC20 as _sERC20_ } from '../../generated/sERC20/sERC20';
 import { NFT, Spectre, sERC20 } from '../../generated/schema';
 
 // Note: If a handler doesn't require existing field values, it is faster
@@ -25,20 +25,20 @@ export function handleFractionalize(event: Fractionalize): void {
   }
 
   let _sERC20 = new sERC20(sERC20Id);
-  let contract = sERC20Contract.bind(event.params.sERC20);
+  let contract = _sERC20_.bind(event.params.sERC20);
+  _sERC20.spectre = spectreId;
   _sERC20.name = contract.name();
   _sERC20.symbol = contract.symbol();
   _sERC20.cap = contract.cap();
-  _sERC20.spectre = spectreId;
   _sERC20.save();
 
-  let _spectre = new Spectre(spectreId);
-  _spectre.NFT = NFTId;
-  _spectre.sERC20 = sERC20Id;
-  _spectre.state = 'Locked';
-  _spectre.vault = event.address;
-  _spectre.broker = event.params.broker;
-  _spectre.save();
+  let spectre = new Spectre(spectreId);
+  spectre.NFT = NFTId;
+  spectre.sERC20 = sERC20Id;
+  spectre.state = 'Locked';
+  spectre.vault = event.address;
+  spectre.broker = event.params.broker;
+  spectre.save();
 }
 
 export function handleUnlock(event: Unlock): void {

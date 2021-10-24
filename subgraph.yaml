@@ -83,7 +83,7 @@ dataSources:
         # - Close
         # - CreateProposal
         - EnableFlashIssuance
-        # - Issue
+        - Issue
         - Register
         # - WithdrawProposal
       abis:
@@ -100,8 +100,8 @@ dataSources:
         #   handler: handleCreateProposal
         - event: EnableFlashIssuance(indexed address)
           handler: handleEnableFlashIssuance
-        # - event: Issue(indexed address,indexed address,uint256,uint256)
-        #   handler: handleIssue
+        - event: Issue(indexed address,indexed address,uint256,uint256)
+          handler: handleIssue
         - event: Register(indexed address,indexed address,address,bytes32,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleRegister
         # - event: RejectProposal(indexed address,indexed uint256)
