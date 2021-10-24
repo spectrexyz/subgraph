@@ -10,7 +10,7 @@ import {
   RejectProposal,
   WithdrawProposal,
 } from '../../generated/Issuer/Issuer';
-import { Issue, Issuance, sERC20, Pool } from '../../generated/schema';
+import { Issue, Issuance, IssuanceProposal, sERC20, Pool } from '../../generated/schema';
 import { Pool as _Pool_ } from '../../generated/Issuer/Pool';
 
 export function handleRegister(event: Register): void {
@@ -49,13 +49,47 @@ export function handleEnableFlashIssuance(event: EnableFlashIssuance): void {
   // issuance.save();
 }
 
-export function handleCreateProposal(event: CreateProposal): void {}
+export function handleCreateProposal(event: CreateProposal): void {
+  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
 
-export function handleAcceptProposal(event: AcceptProposal): void {}
+  let proposal = new IssuanceProposal(id);
+  proposal.issuance = event.params.sERC20.toHexString();
+  proposal.state = 'Pending';
+  proposal.timestamp = event.block.timestamp;
+  proposal.buyer = event.params.buyer;
+  proposal.value = event.params.value;
+  proposal.price = event.params.price;
+  proposal.expiration = event.params.expiration;
 
-export function handleRejectProposal(event: RejectProposal): void {}
+  proposal.save();
+}
 
-export function handleWithdrawProposal(event: WithdrawProposal): void {}
+export function handleAcceptProposal(event: AcceptProposal): void {
+  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+
+  let proposal = IssuanceProposal.load(id)!;
+  proposal.state = 'Accepted';
+
+  proposal.save();
+}
+
+export function handleRejectProposal(event: RejectProposal): void {
+  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+
+  let proposal = IssuanceProposal.load(id)!;
+  proposal.state = 'Rejected';
+
+  proposal.save();
+}
+
+export function handleWithdrawProposal(event: WithdrawProposal): void {
+  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+
+  let proposal = IssuanceProposal.load(id)!;
+  proposal.state = 'Withdrawn';
+
+  proposal.save();
+}
 
 export function handleClose(event: Close): void {
   // We need to add an sERC20 params in the close event that we forgot

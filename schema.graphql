@@ -65,6 +65,15 @@ enum IssuanceState {
   Closed
 }
 
+enum IssuanceProposalState {
+  Null
+  Pending
+  Accepted
+  Rejected
+  Lapsed
+  Withdrawn
+}
+
 type Issuance @entity {
   id: ID! # ERC20 address
   sERC20: sERC20!
@@ -78,6 +87,7 @@ type Issuance @entity {
   nbOfProposals: BigInt!
   flash: Boolean
   issues: [Issue!]! @derivedFrom(field: "issuance")
+  proposals: [IssuanceProposal!]! @derivedFrom(field: "issuance")
 }
 
 type Issue @entity {
@@ -87,6 +97,17 @@ type Issue @entity {
   recipient: Bytes!
   value: BigInt! # ETH
   amount: BigInt! # sERC20!
+}
+
+type IssuanceProposal @entity {
+  id: ID!
+  issuance: Issuance!
+  state: IssuanceProposalState!
+  timestamp: BigInt!
+  buyer: Bytes!
+  value: BigInt!
+  price: BigInt!
+  expiration: BigInt!
 }
 
 # pool-related entities

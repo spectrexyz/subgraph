@@ -81,7 +81,7 @@ dataSources:
       entities:
         # - AcceptProposal
         # - Close
-        # - CreateProposal
+        - CreateProposal
         - EnableFlashIssuance
         - Issue
         - Register
@@ -92,22 +92,22 @@ dataSources:
         - name: Pool
           file: ./abis/Pool.json
       eventHandlers:
-        # - event: AcceptProposal(indexed address,indexed uint256)
-        #   handler: handleAcceptProposal
+        - event: AcceptProposal(indexed address,indexed uint256)
+          handler: handleAcceptProposal
         # - event: Close(address)
         #   handler: handleClose
-        # - event: CreateProposal(indexed address,indexed uint256,indexed address,uint256,uint256,uint256)
-        #   handler: handleCreateProposal
+        - event: CreateProposal(indexed address,indexed uint256,indexed address,uint256,uint256,uint256)
+          handler: handleCreateProposal
         - event: EnableFlashIssuance(indexed address)
           handler: handleEnableFlashIssuance
         - event: Issue(indexed address,indexed address,uint256,uint256)
           handler: handleIssue
         - event: Register(indexed address,indexed address,address,bytes32,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleRegister
-        # - event: RejectProposal(indexed address,indexed uint256)
-        #   handler: handleRejectProposal
-        # - event: WithdrawProposal(indexed address,indexed uint256)
-        #   handler: handleWithdrawProposal
+        - event: RejectProposal(indexed address,indexed uint256)
+          handler: handleRejectProposal
+        - event: WithdrawProposal(indexed address,indexed uint256)
+          handler: handleWithdrawProposal
       file: ./src/issuer/mapping.ts
   - kind: ethereum/contract
     name: Vault
