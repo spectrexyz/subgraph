@@ -8,8 +8,14 @@ import {
   RejectProposal,
   WithdrawProposal,
 } from '../../generated/Issuer/Issuer';
-import { Issue, Issuance, IssuanceProposal, sERC20, Pool } from '../../generated/schema';
 import { Pool as _Pool_ } from '../../generated/Issuer/Pool';
+import {
+  Issuance,
+  IssuanceProposal,
+  Issue,
+  Pool,
+  sERC20,
+} from '../../generated/schema';
 
 export function handleRegister(event: Register): void {
   let id = event.params.sERC20.toHexString();
@@ -47,7 +53,8 @@ export function handleEnableFlashIssuance(event: EnableFlashIssuance): void {
 }
 
 export function handleCreateProposal(event: CreateProposal): void {
-  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+  let id = event.params.sERC20.toHexString() + '#'
+    + event.params.proposalId.toString();
 
   let proposal = new IssuanceProposal(id);
   proposal.issuance = event.params.sERC20.toHexString();
@@ -62,7 +69,8 @@ export function handleCreateProposal(event: CreateProposal): void {
 }
 
 export function handleAcceptProposal(event: AcceptProposal): void {
-  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+  let id = event.params.sERC20.toHexString() + '#'
+    + event.params.proposalId.toString();
 
   let proposal = IssuanceProposal.load(id)!;
   proposal.state = 'Accepted';
@@ -71,7 +79,8 @@ export function handleAcceptProposal(event: AcceptProposal): void {
 }
 
 export function handleRejectProposal(event: RejectProposal): void {
-  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+  let id = event.params.sERC20.toHexString() + '#'
+    + event.params.proposalId.toString();
 
   let proposal = IssuanceProposal.load(id)!;
   proposal.state = 'Rejected';
@@ -80,7 +89,8 @@ export function handleRejectProposal(event: RejectProposal): void {
 }
 
 export function handleWithdrawProposal(event: WithdrawProposal): void {
-  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+  let id = event.params.sERC20.toHexString() + '#'
+    + event.params.proposalId.toString();
 
   let proposal = IssuanceProposal.load(id)!;
   proposal.state = 'Withdrawn';

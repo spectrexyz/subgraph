@@ -11,7 +11,13 @@ import {
   RejectProposal,
   WithdrawProposal,
 } from '../../generated/Broker/Broker';
-import { Buyout as BuyoutEntity, BuyoutProposal, Claim as ClaimEntity, Sale, sERC20 } from '../../generated/schema';
+import {
+  Buyout as BuyoutEntity,
+  BuyoutProposal,
+  Claim as ClaimEntity,
+  Sale,
+  sERC20,
+} from '../../generated/schema';
 
 export function handleRegister(event: Register): void {
   let id = event.params.sERC20.toHexString();
@@ -92,7 +98,8 @@ export function handleClaim(event: Claim): void {
 }
 
 export function handleCreateProposal(event: CreateProposal): void {
-  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+  let id = event.params.sERC20.toHexString() + '#'
+    + event.params.proposalId.toString();
 
   let proposal = new BuyoutProposal(id);
   proposal.sale = event.params.sERC20.toHexString();
@@ -107,7 +114,8 @@ export function handleCreateProposal(event: CreateProposal): void {
 }
 
 export function handleAcceptProposal(event: AcceptProposal): void {
-  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+  let id = event.params.sERC20.toHexString() + '#'
+    + event.params.proposalId.toString();
 
   let proposal = BuyoutProposal.load(id)!;
   proposal.state = 'Accepted';
@@ -116,7 +124,8 @@ export function handleAcceptProposal(event: AcceptProposal): void {
 }
 
 export function handleRejectProposal(event: RejectProposal): void {
-  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+  let id = event.params.sERC20.toHexString() + '#'
+    + event.params.proposalId.toString();
 
   let proposal = BuyoutProposal.load(id)!;
   proposal.state = 'Rejected';
@@ -125,7 +134,8 @@ export function handleRejectProposal(event: RejectProposal): void {
 }
 
 export function handleWithdrawProposal(event: WithdrawProposal): void {
-  let id = event.params.sERC20.toHexString() + '#' + event.params.proposalId.toString();
+  let id = event.params.sERC20.toHexString() + '#'
+    + event.params.proposalId.toString();
 
   let proposal = BuyoutProposal.load(id)!;
   proposal.state = 'Withdrawn';

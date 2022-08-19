@@ -1,7 +1,11 @@
-import { BigDecimal, BigInt, Address } from '@graphprotocol/graph-ts';
-import { BVault as _BVault_, PoolBalanceChanged, Swap as SwapEvent } from '../../generated/BVault/BVault';
+import { Address, BigDecimal, BigInt } from '@graphprotocol/graph-ts';
+import {
+  BVault as _BVault_,
+  PoolBalanceChanged,
+  Swap as SwapEvent,
+} from '../../generated/BVault/BVault';
 import { Pool as _Pool_ } from '../../generated/BVault/Pool';
-import { Pool, Join, Swap, PoolState } from '../../generated/schema';
+import { Join, Pool, PoolState, Swap } from '../../generated/schema';
 
 function createState<T>(id: string, pool: Pool, event: T): void {
   // AssemblyScript does not support union type.
@@ -22,7 +26,11 @@ function createState<T>(id: string, pool: Pool, event: T): void {
     state.weights = [weights[sIndex], weights[eIndex]];
     state.price = new BigDecimal(state.balances[eIndex])
       .times(new BigDecimal(state.weights[sIndex]))
-      .div(new BigDecimal(state.balances[sIndex]).times(new BigDecimal(state.weights[eIndex])));
+      .div(
+        new BigDecimal(state.balances[sIndex]).times(
+          new BigDecimal(state.weights[eIndex]),
+        ),
+      );
 
     state.save();
   }
@@ -66,9 +74,15 @@ export function handleSwap(event: SwapEvent): void {
     swap.from = event.transaction.from;
 
     if (event.params.tokenIn == Address.fromString(pool.sERC20)) {
-      swap.amounts = [event.params.amountIn, BigInt.fromI32(0).minus(event.params.amountOut)];
+      swap.amounts = [
+        event.params.amountIn,
+        BigInt.fromI32(0).minus(event.params.amountOut),
+      ];
     } else {
-      swap.amounts = [BigInt.fromI32(0).minus(event.params.amountOut), event.params.amountIn];
+      swap.amounts = [
+        BigInt.fromI32(0).minus(event.params.amountOut),
+        event.params.amountIn,
+      ];
     }
 
     swap.save();

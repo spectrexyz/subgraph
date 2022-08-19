@@ -1,9 +1,10 @@
-import { Fractionalize, Unlock } from '../../generated/Vault/Vault';
+import { NFT, sERC20, Spectre } from '../../generated/schema';
 import { sERC20 as _sERC20_ } from '../../generated/sERC20/sERC20';
-import { NFT, Spectre, sERC20 } from '../../generated/schema';
+import { Fractionalize, Unlock } from '../../generated/Vault/Vault';
 
 export function handleFractionalize(event: Fractionalize): void {
-  let NFTId = event.params.collection.toHexString() + '#' + event.params.tokenId.toString();
+  let NFTId = event.params.collection.toHexString() + '#'
+    + event.params.tokenId.toString();
   let sERC20Id = event.params.sERC20.toHexString();
   let spectreId = event.params.id.toString();
   let _NFT = NFT.load(NFTId);
