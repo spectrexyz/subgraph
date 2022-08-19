@@ -401,6 +401,46 @@ export class Issuer__issuanceOfResult {
     map.set("value9", ethereum.Value.fromBoolean(this.value9));
     return map;
   }
+
+  getState(): i32 {
+    return this.value0;
+  }
+
+  getGuardian(): Address {
+    return this.value1;
+  }
+
+  getPool(): Address {
+    return this.value2;
+  }
+
+  getPoolId(): Bytes {
+    return this.value3;
+  }
+
+  getReserve(): BigInt {
+    return this.value4;
+  }
+
+  getAllocation(): BigInt {
+    return this.value5;
+  }
+
+  getFee(): BigInt {
+    return this.value6;
+  }
+
+  getNbOfProposals(): BigInt {
+    return this.value7;
+  }
+
+  getFlash(): boolean {
+    return this.value8;
+  }
+
+  getSERC20IsToken0(): boolean {
+    return this.value9;
+  }
 }
 
 export class Issuer__proposalForResult {
@@ -435,6 +475,26 @@ export class Issuer__proposalForResult {
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     return map;
+  }
+
+  getState(): i32 {
+    return this.value0;
+  }
+
+  getBuyer(): Address {
+    return this.value1;
+  }
+
+  getValue(): BigInt {
+    return this.value2;
+  }
+
+  getPrice(): BigInt {
+    return this.value3;
+  }
+
+  getExpiration(): BigInt {
+    return this.value4;
   }
 }
 

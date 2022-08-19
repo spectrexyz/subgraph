@@ -352,6 +352,18 @@ export class BVault__getPausedStateResult {
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     return map;
   }
+
+  getPaused(): boolean {
+    return this.value0;
+  }
+
+  getPauseWindowEndTime(): BigInt {
+    return this.value1;
+  }
+
+  getBufferPeriodEndTime(): BigInt {
+    return this.value2;
+  }
 }
 
 export class BVault__getPoolResult {
@@ -371,6 +383,14 @@ export class BVault__getPoolResult {
       ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value1))
     );
     return map;
+  }
+
+  getValue0(): Address {
+    return this.value0;
+  }
+
+  getValue1(): i32 {
+    return this.value1;
   }
 }
 
@@ -395,6 +415,22 @@ export class BVault__getPoolTokenInfoResult {
     map.set("value3", ethereum.Value.fromAddress(this.value3));
     return map;
   }
+
+  getCash(): BigInt {
+    return this.value0;
+  }
+
+  getManaged(): BigInt {
+    return this.value1;
+  }
+
+  getLastChangeBlock(): BigInt {
+    return this.value2;
+  }
+
+  getAssetManager(): Address {
+    return this.value3;
+  }
 }
 
 export class BVault__getPoolTokensResult {
@@ -414,6 +450,18 @@ export class BVault__getPoolTokensResult {
     map.set("value1", ethereum.Value.fromUnsignedBigIntArray(this.value1));
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     return map;
+  }
+
+  getTokens(): Array<Address> {
+    return this.value0;
+  }
+
+  getBalances(): Array<BigInt> {
+    return this.value1;
+  }
+
+  getLastChangeBlock(): BigInt {
+    return this.value2;
   }
 }
 

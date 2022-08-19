@@ -421,6 +421,14 @@ export class Broker__priceOfForResult {
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
     return map;
   }
+
+  getValue(): BigInt {
+    return this.value0;
+  }
+
+  getCollateral(): BigInt {
+    return this.value1;
+  }
 }
 
 export class Broker__proposalForResult {
@@ -455,6 +463,26 @@ export class Broker__proposalForResult {
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     return map;
+  }
+
+  getState(): i32 {
+    return this.value0;
+  }
+
+  getBuyer(): Address {
+    return this.value1;
+  }
+
+  getValue(): BigInt {
+    return this.value2;
+  }
+
+  getCollateral(): BigInt {
+    return this.value3;
+  }
+
+  getExpiration(): BigInt {
+    return this.value4;
   }
 }
 
@@ -506,6 +534,42 @@ export class Broker__saleOfResult {
     map.set("value7", ethereum.Value.fromBoolean(this.value7));
     map.set("value8", ethereum.Value.fromBoolean(this.value8));
     return map;
+  }
+
+  getState(): i32 {
+    return this.value0;
+  }
+
+  getGuardian(): Address {
+    return this.value1;
+  }
+
+  getReserve(): BigInt {
+    return this.value2;
+  }
+
+  getMultiplier(): BigInt {
+    return this.value3;
+  }
+
+  getOpening(): BigInt {
+    return this.value4;
+  }
+
+  getStock(): BigInt {
+    return this.value5;
+  }
+
+  getNbOfProposals(): BigInt {
+    return this.value6;
+  }
+
+  getFlash(): boolean {
+    return this.value7;
+  }
+
+  getEscape(): boolean {
+    return this.value8;
   }
 }
 

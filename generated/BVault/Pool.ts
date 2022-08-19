@@ -128,6 +128,26 @@ export class Pool__getMiscDataResult {
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     return map;
   }
+
+  getLogInvariant(): BigInt {
+    return this.value0;
+  }
+
+  getLogTotalSupply(): BigInt {
+    return this.value1;
+  }
+
+  getOracleSampleCreationTimestamp(): BigInt {
+    return this.value2;
+  }
+
+  getOracleIndex(): BigInt {
+    return this.value3;
+  }
+
+  getSwapFeePercentage(): BigInt {
+    return this.value4;
+  }
 }
 
 export class Pool__getPastAccumulatorsInputQueriesStruct extends ethereum.Tuple {
@@ -157,6 +177,18 @@ export class Pool__getPausedStateResult {
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     return map;
+  }
+
+  getPaused(): boolean {
+    return this.value0;
+  }
+
+  getPauseWindowEndTime(): BigInt {
+    return this.value1;
+  }
+
+  getBufferPeriodEndTime(): BigInt {
+    return this.value2;
   }
 }
 
@@ -198,6 +230,34 @@ export class Pool__getSampleResult {
     map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
     return map;
   }
+
+  getLogPairPrice(): BigInt {
+    return this.value0;
+  }
+
+  getAccLogPairPrice(): BigInt {
+    return this.value1;
+  }
+
+  getLogBptPrice(): BigInt {
+    return this.value2;
+  }
+
+  getAccLogBptPrice(): BigInt {
+    return this.value3;
+  }
+
+  getLogInvariant(): BigInt {
+    return this.value4;
+  }
+
+  getAccLogInvariant(): BigInt {
+    return this.value5;
+  }
+
+  getTimestamp(): BigInt {
+    return this.value6;
+  }
 }
 
 export class Pool__getTimeWeightedAverageInputQueriesStruct extends ethereum.Tuple {
@@ -229,6 +289,14 @@ export class Pool__onExitPoolResult {
     map.set("value1", ethereum.Value.fromUnsignedBigIntArray(this.value1));
     return map;
   }
+
+  getValue0(): Array<BigInt> {
+    return this.value0;
+  }
+
+  getValue1(): Array<BigInt> {
+    return this.value1;
+  }
 }
 
 export class Pool__onJoinPoolResult {
@@ -245,6 +313,14 @@ export class Pool__onJoinPoolResult {
     map.set("value0", ethereum.Value.fromUnsignedBigIntArray(this.value0));
     map.set("value1", ethereum.Value.fromUnsignedBigIntArray(this.value1));
     return map;
+  }
+
+  getAmountsIn(): Array<BigInt> {
+    return this.value0;
+  }
+
+  getDueProtocolFeeAmounts(): Array<BigInt> {
+    return this.value1;
   }
 }
 
@@ -301,6 +377,14 @@ export class Pool__queryExitResult {
     map.set("value1", ethereum.Value.fromUnsignedBigIntArray(this.value1));
     return map;
   }
+
+  getBptIn(): BigInt {
+    return this.value0;
+  }
+
+  getAmountsOut(): Array<BigInt> {
+    return this.value1;
+  }
 }
 
 export class Pool__queryJoinResult {
@@ -317,6 +401,14 @@ export class Pool__queryJoinResult {
     map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
     map.set("value1", ethereum.Value.fromUnsignedBigIntArray(this.value1));
     return map;
+  }
+
+  getBptOut(): BigInt {
+    return this.value0;
+  }
+
+  getAmountsIn(): Array<BigInt> {
+    return this.value1;
   }
 }
 
