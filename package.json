@@ -5,6 +5,7 @@
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ spectre",
+    "format": "pnpm dprint fmt -- 'src/**/*.ts'",
     "create-local": "graph create --node http://localhost:8020/ spectre",
     "remove-local": "graph remove --node http://localhost:8020/ spectre",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 spectre"
