@@ -26,13 +26,13 @@ For a deeper documentation of spectre ⇌ protocol see [here](https://spectre.xy
 
 ```
 git clone https://github.com/spectrexyz/subgraph.git
-cd subgraph && npm install
+cd subgraph && pnpm install
 ```
 
 ### Scripts
 
 ```
-npm run codegen
-npm run build
-npm run deploy
+pnpm run codegen
+pnpm run build
+pnpm run deploy
 ```
