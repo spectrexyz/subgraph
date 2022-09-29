@@ -3,18 +3,20 @@
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
-    "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ spectre",
+    "build:rinkeby": "graph build --network rinkeby",
+    "build:goerli": "graph build --network goerli",
+    "deploy:rinkeby": "graph deploy --network rinkeby --studio spectre-dev-preview",
+    "deploy:goerli": "graph deploy --network goerli --studio spectre-preview",
     "format": "pnpm dprint fmt -- 'src/**/*.ts'",
     "create-local": "graph create --node http://localhost:8020/ spectre",
     "remove-local": "graph remove --node http://localhost:8020/ spectre",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 spectre"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.33.0",
-    "@graphprotocol/graph-ts": "0.27.0"
+    "@graphprotocol/graph-cli": "0.34.0",
+    "@graphprotocol/graph-ts": "0.28.0"
   },
   "devDependencies": {
-    "dprint": "^0.30.3"
+    "dprint": "^0.32.1"
   }
 }
