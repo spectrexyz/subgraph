@@ -1,5 +1,6 @@
 import { NFT, sERC20, Spectre } from '../../generated/schema';
-import { sERC20 as _sERC20_ } from '../../generated/sERC20/sERC20';
+import { sERC20 as sERC20Contract } from '../../generated/sERC20/sERC20';
+import { sERC721 as sERC721Contract } from '../../generated/Vault/sERC721';
 import { Fractionalize, Unlock } from '../../generated/Vault/Vault';
 
 export function handleFractionalize(event: Fractionalize): void {
@@ -13,11 +14,15 @@ export function handleFractionalize(event: Fractionalize): void {
     _NFT = new NFT(NFTId);
     _NFT.collection = event.params.collection;
     _NFT.tokenId = event.params.tokenId;
+
+    let contract = sERC721Contract.bind(event.params.collection);
+    _NFT.tokenURI = contract.tokenURI(event.params.tokenId);
+
     _NFT.save();
   }
 
   let _sERC20 = new sERC20(sERC20Id);
-  let contract = _sERC20_.bind(event.params.sERC20);
+  let contract = sERC20Contract.bind(event.params.sERC20);
   _sERC20.spectre = spectreId;
   _sERC20.name = contract.name();
   _sERC20.symbol = contract.symbol();

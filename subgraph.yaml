@@ -114,6 +114,8 @@ dataSources:
           file: ./abis/Vault.json
         - name: sERC20
           file: ./abis/sERC20.json
+        - name: sERC721
+          file: ./abis/sERC721.json
       eventHandlers:
         - event: Fractionalize(indexed address,indexed uint256,indexed
             uint256,address,address)
