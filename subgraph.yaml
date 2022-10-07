@@ -1,4 +1,6 @@
 specVersion: 0.0.4
+features:
+  - nonDeterministicIpfs
 schema:
   file: ./schema.graphql
 dataSources:
