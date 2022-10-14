@@ -84,6 +84,8 @@ export function handleFractionalize(event: Fractionalize): void {
   spectre.vault = event.address;
   spectre.broker = event.params.broker;
 
+  spectre.timestamp = event.block.timestamp;
+
   // keep track of the total
   counter.count = counter.count + 1;
 

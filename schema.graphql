@@ -39,6 +39,7 @@ type Spectre @entity {
   state: SpectreState!
   vault: Bytes!
   broker: Bytes!
+  timestamp: BigInt!
 }
 
 type SpectresCounter @entity {
