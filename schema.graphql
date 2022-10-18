@@ -51,6 +51,7 @@ type SpectresCounter @entity {
 
 type sERC20 @entity {
   id: ID! # ERC20 address
+  address: Bytes!
   spectre: Spectre!
   name: String!
   symbol: String!

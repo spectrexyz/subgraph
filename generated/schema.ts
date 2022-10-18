@@ -314,6 +314,15 @@ export class sERC20 extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get address(): Bytes {
+    let value = this.get("address");
+    return value!.toBytes();
+  }
+
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
+  }
+
   get spectre(): string {
     let value = this.get("spectre");
     return value!.toString();

@@ -15,7 +15,7 @@ export function handleFractionalize(event: Fractionalize): void {
   let nftId = event.params.collection.toHexString() + '#'
     + event.params.tokenId.toString();
 
-  let sERC20Id = event.params.sERC20.toHexString();
+  let sERC20Address = event.params.sERC20;
   let spectreId = event.params.id.toString();
   let nft = NFT.load(nftId);
 
@@ -69,17 +69,18 @@ export function handleFractionalize(event: Fractionalize): void {
     nft.save();
   }
 
-  let _sERC20 = new sERC20(sERC20Id);
+  let _sERC20 = new sERC20(sERC20Address.toHexString());
   let contract = sERC20Contract.bind(event.params.sERC20);
   _sERC20.spectre = spectreId;
   _sERC20.name = contract.name();
   _sERC20.symbol = contract.symbol();
   _sERC20.cap = contract.cap();
+  _sERC20.address = sERC20Address;
   _sERC20.save();
 
   let spectre = new Spectre(spectreId);
   spectre.NFT = nftId;
-  spectre.sERC20 = sERC20Id;
+  spectre.sERC20 = sERC20Address.toHexString();
   spectre.state = 'Locked';
   spectre.vault = event.address;
   spectre.broker = event.params.broker;
