@@ -38,7 +38,8 @@ export function handleRegister(event: Register): void {
   issuance.fee = event.params.fee;
   issuance.save();
 
-  let _sERC20 = sERC20.load(id)!;
+  let _sERC20 = sERC20.load(id);
+  if (!_sERC20) throw new Error('Can’t load schema');
   _sERC20.pool = poolId;
   _sERC20.issuance = id;
   _sERC20.save();
@@ -46,7 +47,8 @@ export function handleRegister(event: Register): void {
 
 export function handleEnableFlashIssuance(event: EnableFlashIssuance): void {
   let id = event.params.sERC20.toHexString();
-  let issuance = Issuance.load(id)!;
+  let issuance = Issuance.load(id);
+  if (!issuance) throw new Error('Can’t load schema');
 
   issuance.flash = true;
   issuance.save();
@@ -72,7 +74,8 @@ export function handleAcceptProposal(event: AcceptProposal): void {
   let id = event.params.sERC20.toHexString() + '#'
     + event.params.proposalId.toString();
 
-  let proposal = IssuanceProposal.load(id)!;
+  let proposal = IssuanceProposal.load(id);
+  if (!proposal) throw new Error('Can’t load schema');
   proposal.state = 'Accepted';
 
   proposal.save();
@@ -82,7 +85,8 @@ export function handleRejectProposal(event: RejectProposal): void {
   let id = event.params.sERC20.toHexString() + '#'
     + event.params.proposalId.toString();
 
-  let proposal = IssuanceProposal.load(id)!;
+  let proposal = IssuanceProposal.load(id);
+  if (!proposal) throw new Error('Can’t load schema');
   proposal.state = 'Rejected';
 
   proposal.save();
@@ -92,7 +96,8 @@ export function handleWithdrawProposal(event: WithdrawProposal): void {
   let id = event.params.sERC20.toHexString() + '#'
     + event.params.proposalId.toString();
 
-  let proposal = IssuanceProposal.load(id)!;
+  let proposal = IssuanceProposal.load(id);
+  if (!proposal) throw new Error('Can’t load schema');
   proposal.state = 'Withdrawn';
 
   proposal.save();
@@ -101,7 +106,8 @@ export function handleWithdrawProposal(event: WithdrawProposal): void {
 export function handleClose(event: Close): void {
   let id = event.params.sERC20.toHexString();
 
-  let issuance = Issuance.load(id)!;
+  let issuance = Issuance.load(id);
+  if (!issuance) throw new Error('Can’t load schema');
   issuance.state = 'Closed';
   issuance.save();
 }
@@ -115,6 +121,11 @@ export function handleIssue(event: IssueEvent): void {
   issue.recipient = event.params.recipient;
   issue.value = event.params.value;
   issue.amount = event.params.amount;
+
+  let _sERC20 = sERC20.load(event.params.sERC20.toHexString());
+  if (!_sERC20) throw new Error('Can’t load schema');
+  _sERC20.minted = _sERC20.minted.plus(event.params.amount);
+  _sERC20.save();
 
   issue.save();
 }

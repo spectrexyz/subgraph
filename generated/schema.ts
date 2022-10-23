@@ -282,6 +282,15 @@ export class sERC20 extends Entity {
     this.set("cap", Value.fromBigInt(value));
   }
 
+  get minted(): BigInt {
+    let value = this.get("minted");
+    return value!.toBigInt();
+  }
+
+  set minted(value: BigInt) {
+    this.set("minted", Value.fromBigInt(value));
+  }
+
   get sale(): string | null {
     let value = this.get("sale");
     if (!value || value.kind == ValueKind.NULL) {

@@ -47,6 +47,7 @@ type sERC20 @entity {
   name: String!
   symbol: String!
   cap: BigInt!
+  minted: BigInt!
   sale: Sale
   issuance: Issuance
   pool: Pool
