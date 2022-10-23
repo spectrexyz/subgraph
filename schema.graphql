@@ -15,21 +15,12 @@ enum SpectreState {
   Unlocked
 }
 
-type NFTMetadata @entity {
-  id: ID!
-  nft: NFT!
-  description: String!
-  image: String!
-  name: String!
-}
-
 type NFT @entity {
   id: ID! # address#id
   collection: Bytes!
   tokenId: BigInt!
   tokenURI: String!
   creator: Bytes!
-  metadata: NFTMetadata! @derivedFrom(field: "nft")
 }
 
 type Spectre @entity {

@@ -1,12 +1,4 @@
-import { ipfs } from '@graphprotocol/graph-ts';
-import { json } from '@graphprotocol/graph-ts';
-import {
-  NFT,
-  NFTMetadata,
-  sERC20,
-  Spectre,
-  SpectresCounter,
-} from '../../generated/schema';
+import { NFT, sERC20, Spectre, SpectresCounter } from '../../generated/schema';
 import { sERC20 as sERC20Contract } from '../../generated/sERC20/sERC20';
 import { sERC721 as sERC721Contract } from '../../generated/Vault/sERC721';
 import { Fractionalize, Unlock } from '../../generated/Vault/Vault';
@@ -26,11 +18,8 @@ export function handleFractionalize(event: Fractionalize): void {
     counter.save();
   }
 
-  let nftMetadata = NFTMetadata.load(nftId);
-
-  if (!nft || !nftMetadata) {
+  if (!nft) {
     nft = new NFT(nftId);
-    nftMetadata = new NFTMetadata(nftId);
 
     nft.collection = event.params.collection;
     nft.tokenId = event.params.tokenId;
@@ -38,33 +27,6 @@ export function handleFractionalize(event: Fractionalize): void {
     let contract = sERC721Contract.bind(event.params.collection);
     nft.tokenURI = contract.tokenURI(event.params.tokenId);
     nft.creator = event.address;
-
-    let metadataPath = nft.tokenURI.replace('ipfs://', '');
-    let metadataBytes = ipfs.cat(metadataPath);
-
-    if (metadataBytes) {
-      let metadata = json.fromBytes(metadataBytes).toObject();
-      if (metadata) {
-        const name = metadata.get('name');
-        if (name) {
-          nftMetadata.name = name.toString();
-        }
-
-        const description = metadata.get('description');
-        if (description) {
-          nftMetadata.description = description.toString();
-        }
-
-        const image = metadata.get('image');
-        if (image) {
-          nftMetadata.image = image.toString();
-        }
-
-        nftMetadata.id = nftId;
-        nftMetadata.nft = nftId;
-        nftMetadata.save();
-      }
-    }
 
     nft.save();
   }

@@ -11,74 +11,6 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class NFTMetadata extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save NFTMetadata entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type NFTMetadata must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("NFTMetadata", id.toString(), this);
-    }
-  }
-
-  static load(id: string): NFTMetadata | null {
-    return changetype<NFTMetadata | null>(store.get("NFTMetadata", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get nft(): string {
-    let value = this.get("nft");
-    return value!.toString();
-  }
-
-  set nft(value: string) {
-    this.set("nft", Value.fromString(value));
-  }
-
-  get description(): string {
-    let value = this.get("description");
-    return value!.toString();
-  }
-
-  set description(value: string) {
-    this.set("description", Value.fromString(value));
-  }
-
-  get image(): string {
-    let value = this.get("image");
-    return value!.toString();
-  }
-
-  set image(value: string) {
-    this.set("image", Value.fromString(value));
-  }
-
-  get name(): string {
-    let value = this.get("name");
-    return value!.toString();
-  }
-
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
-  }
-}
-
 export class NFT extends Entity {
   constructor(id: string) {
     super();
@@ -144,15 +76,6 @@ export class NFT extends Entity {
 
   set creator(value: Bytes) {
     this.set("creator", Value.fromBytes(value));
-  }
-
-  get metadata(): string {
-    let value = this.get("metadata");
-    return value!.toString();
-  }
-
-  set metadata(value: string) {
-    this.set("metadata", Value.fromString(value));
   }
 }
 
