@@ -19,12 +19,12 @@ let nullAddress = Address.fromString(
   '0x0000000000000000000000000000000000000000',
 );
 
-export function handleTransferSingle(event: TransferSingle): void {
-  let sERC20Address = event.params.operator;
-  let from = event.params.from;
-  let to = event.params.to;
-  let value = event.params.value;
-
+function transfer(
+  sERC20Address: Address,
+  from: Address,
+  to: Address,
+  value: BigInt,
+): void {
   // Subtract the amount from the holdder unless it is the null address
   if (from != nullAddress) {
     let fromId = sERC20Address.toHexString() + '#'
@@ -46,12 +46,27 @@ export function handleTransferSingle(event: TransferSingle): void {
     toHolder.amount = value;
     toHolder.sERC20 = sERC20Address.toHexString();
   }
-
   toHolder.save();
 }
 
-export function handleTransferBatch(_event: TransferBatch): void {
-  // TODO
+export function handleTransferSingle(event: TransferSingle): void {
+  transfer(
+    event.params.operator,
+    event.params.from,
+    event.params.to,
+    event.params.value,
+  );
+}
+
+export function handleTransferBatch(event: TransferBatch): void {
+  for (let i = 0, l = event.params.ids.length; i < l; ++i) {
+    transfer(
+      event.params.operator,
+      event.params.from,
+      event.params.to,
+      event.params.values[i],
+    );
+  }
 }
 
 export function handleFractionalize(event: Fractionalize): void {
