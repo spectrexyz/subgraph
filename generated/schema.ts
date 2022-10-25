@@ -341,6 +341,74 @@ export class sERC20 extends Entity {
       this.set("pool", Value.fromString(<string>value));
     }
   }
+
+  get holders(): Array<string> {
+    let value = this.get("holders");
+    return value!.toStringArray();
+  }
+
+  set holders(value: Array<string>) {
+    this.set("holders", Value.fromStringArray(value));
+  }
+}
+
+export class sERC20Holder extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save sERC20Holder entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type sERC20Holder must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("sERC20Holder", id.toString(), this);
+    }
+  }
+
+  static load(id: string): sERC20Holder | null {
+    return changetype<sERC20Holder | null>(store.get("sERC20Holder", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): Bytes {
+    let value = this.get("address");
+    return value!.toBytes();
+  }
+
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
+    return value!.toBigInt();
+  }
+
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+
+  get sERC20(): string {
+    let value = this.get("sERC20");
+    return value!.toString();
+  }
+
+  set sERC20(value: string) {
+    this.set("sERC20", Value.fromString(value));
+  }
 }
 
 export class Sale extends Entity {

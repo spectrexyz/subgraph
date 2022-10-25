@@ -51,6 +51,14 @@ type sERC20 @entity {
   sale: Sale
   issuance: Issuance
   pool: Pool
+  holders: [sERC20Holder!]! @derivedFrom(field: "sERC20")
+}
+
+type sERC20Holder @entity {
+  id: ID!
+  address: Bytes!
+  amount: BigInt!
+  sERC20: sERC20!
 }
 
 # buyout-related entities

@@ -1,8 +1,58 @@
-import { BigInt } from '@graphprotocol/graph-ts';
-import { NFT, sERC20, Spectre, SpectresCounter } from '../../generated/schema';
+import { Address, BigInt } from '@graphprotocol/graph-ts';
+import {
+  NFT,
+  sERC20,
+  sERC20Holder,
+  Spectre,
+  SpectresCounter,
+} from '../../generated/schema';
 import { sERC20 as sERC20Contract } from '../../generated/sERC20/sERC20';
 import { sERC721 as sERC721Contract } from '../../generated/Vault/sERC721';
-import { Fractionalize, Unlock } from '../../generated/Vault/Vault';
+import {
+  Fractionalize,
+  TransferBatch,
+  TransferSingle,
+  Unlock,
+} from '../../generated/Vault/Vault';
+
+let nullAddress = Address.fromString(
+  '0x0000000000000000000000000000000000000000',
+);
+
+export function handleTransferSingle(event: TransferSingle): void {
+  let sERC20Address = event.params.operator;
+  let from = event.params.from;
+  let to = event.params.to;
+  let value = event.params.value;
+
+  // Subtract the amount from the holdder unless it is the null address
+  if (from != nullAddress) {
+    let fromId = sERC20Address.toHexString() + '#'
+      + from.toHexString();
+    let fromHolder = sERC20Holder.load(fromId);
+    if (!fromHolder) throw new Error('Can’t load holder with ID ' + fromId);
+    fromHolder.amount = fromHolder.amount.minus(value);
+    fromHolder.save();
+  }
+
+  let toId = sERC20Address.toHexString() + '#'
+    + to.toHexString();
+  let toHolder = sERC20Holder.load(toId);
+  if (toHolder) {
+    toHolder.amount = toHolder.amount.plus(value);
+  } else {
+    toHolder = new sERC20Holder(toId);
+    toHolder.address = to;
+    toHolder.amount = value;
+    toHolder.sERC20 = sERC20Address.toHexString();
+  }
+
+  toHolder.save();
+}
+
+export function handleTransferBatch(_event: TransferBatch): void {
+  // TODO
+}
 
 export function handleFractionalize(event: Fractionalize): void {
   let nftId = event.params.collection.toHexString() + '#'

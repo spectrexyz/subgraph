@@ -9,9 +9,9 @@
     "deploy:goerli": "graph deploy --network goerli --studio spectre-preview",
     "deploy:goerli-hosted": "graph deploy --network goerli --product hosted-service bpierre/spectre-preview",
     "format": "pnpm dprint fmt -- 'src/**/*.ts'",
-    "create-local": "graph create --node http://127.0.0.1:8020/ spectre",
-    "remove-local": "graph remove --node http://127.0.0.1:8020/ spectre",
-    "deploy-local": "graph deploy --node http://127.0.0.1:8020/ --ipfs http://127.0.0.1:5001 spectre"
+    "create:local": "graph create --node http://127.0.0.1:8020/ spectre",
+    "remove:local": "graph remove --node http://127.0.0.1:8020/ spectre",
+    "deploy:local": "graph deploy --node http://127.0.0.1:8020/ --version-label 1 --ipfs http://127.0.0.1:5001 spectre"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.34.0",
