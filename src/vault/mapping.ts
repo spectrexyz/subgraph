@@ -6,7 +6,7 @@ import {
   Spectre,
   SpectresCounter,
 } from '../../generated/schema';
-import { sERC20 as sERC20Contract } from '../../generated/sERC20/sERC20';
+import { sERC20 as sERC20Contract } from '../../generated/Vault/sERC20';
 import { sERC721 as sERC721Contract } from '../../generated/Vault/sERC721';
 import {
   Fractionalize,
@@ -99,12 +99,14 @@ export function handleFractionalize(event: Fractionalize): void {
 
   let _sERC20 = new sERC20(sERC20Address.toHexString());
   let contract = sERC20Contract.bind(event.params.sERC20);
+
   _sERC20.spectre = spectreId;
   _sERC20.name = contract.name();
   _sERC20.symbol = contract.symbol();
   _sERC20.cap = contract.cap();
   _sERC20.address = sERC20Address;
   _sERC20.minted = BigInt.fromI32(0);
+  _sERC20.price = BigInt.fromI32(0);
   _sERC20.save();
 
   let spectre = new Spectre(spectreId);

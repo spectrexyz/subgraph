@@ -350,6 +350,15 @@ export class sERC20 extends Entity {
   set holders(value: Array<string>) {
     this.set("holders", Value.fromStringArray(value));
   }
+
+  get price(): BigInt {
+    let value = this.get("price");
+    return value!.toBigInt();
+  }
+
+  set price(value: BigInt) {
+    this.set("price", Value.fromBigInt(value));
+  }
 }
 
 export class sERC20Holder extends Entity {

@@ -52,6 +52,7 @@ type sERC20 @entity {
   issuance: Issuance
   pool: Pool
   holders: [sERC20Holder!]! @derivedFrom(field: "sERC20")
+  price: BigInt!
 }
 
 type sERC20Holder @entity {

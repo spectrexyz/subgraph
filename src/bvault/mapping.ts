@@ -27,10 +27,14 @@ function createState<T>(id: string, pool: Pool, event: T): void {
     state.price = new BigDecimal(state.balances[eIndex])
       .times(new BigDecimal(state.weights[sIndex]))
       .div(
-        new BigDecimal(state.balances[sIndex]).times(
-          new BigDecimal(state.weights[eIndex]),
-        ),
+        new BigDecimal(state.balances[sIndex])
+          .times(new BigDecimal(state.weights[eIndex])),
       );
+
+    _sERC20.price = IssuerContract
+      .bind(dataSource.address())
+      .priceOf(Address.fromString(pool.sERC20));
+    _sERC20.save();
 
     state.save();
   }

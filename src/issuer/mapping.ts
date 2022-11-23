@@ -1,9 +1,11 @@
+import { dataSource } from '@graphprotocol/graph-ts';
 import {
   AcceptProposal,
   Close,
   CreateProposal,
   EnableFlashIssuance,
   Issue as IssueEvent,
+  Issuer as IssuerContract,
   Register,
   RejectProposal,
   WithdrawProposal,
@@ -40,8 +42,12 @@ export function handleRegister(event: Register): void {
 
   let _sERC20 = sERC20.load(id);
   if (!_sERC20) throw new Error('Can’t load schema');
+
+  const issuerContract = IssuerContract.bind(dataSource.address());
+
   _sERC20.pool = poolId;
   _sERC20.issuance = id;
+  _sERC20.price = issuerContract.priceOf(event.params.sERC20);
   _sERC20.save();
 }
 
