@@ -1,6 +1,4 @@
 specVersion: 0.0.4
-features:
-  - nonDeterministicIpfs
 schema:
   file: ./schema.graphql
 dataSources:
@@ -150,6 +148,8 @@ dataSources:
           file: ./abis/BVault.json
         - name: Pool
           file: ./abis/Pool.json
+        - name: Issuer
+          file: ./abis/Issuer.json
       eventHandlers:
         - event: PoolBalanceChanged(indexed bytes32,indexed
             address,address[],int256[],uint256[])

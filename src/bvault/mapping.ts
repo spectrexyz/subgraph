@@ -5,7 +5,8 @@ import {
   Swap as SwapEvent,
 } from '../../generated/BVault/BVault';
 import { Pool as _Pool_ } from '../../generated/BVault/Pool';
-import { Join, Pool, PoolState, Swap } from '../../generated/schema';
+import { Issuer as _Issuer_ } from '../../generated/Issuer/Issuer';
+import { Join, Pool, PoolState, sERC20, Swap } from '../../generated/schema';
 
 function createState<T>(id: string, pool: Pool, event: T): void {
   // AssemblyScript does not support union type.
@@ -31,9 +32,14 @@ function createState<T>(id: string, pool: Pool, event: T): void {
           .times(new BigDecimal(state.weights[eIndex])),
       );
 
-    _sERC20.price = IssuerContract
-      .bind(dataSource.address())
-      .priceOf(Address.fromString(pool.sERC20));
+    let _sERC20 = sERC20.load(pool.sERC20);
+    if (!_sERC20) throw new Error('Can’t load schema');
+
+    let _issuer_ = _Issuer_.bind(
+      Address.fromString('0x93B9698EE8d5267B4AcB8DbA35467685142A2dc4'),
+    );
+    _sERC20.price = _issuer_.priceOf(Address.fromString(pool.sERC20));
+
     _sERC20.save();
 
     state.save();
