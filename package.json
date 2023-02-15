@@ -3,9 +3,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
-    "build:rinkeby": "graph build --network rinkeby",
     "build:goerli": "graph build --network goerli",
-    "deploy:rinkeby": "graph deploy --network rinkeby --studio spectre-dev-preview",
     "deploy:goerli": "graph deploy --network goerli --studio spectre-preview",
     "deploy:goerli-hosted": "graph deploy --network goerli --product hosted-service bpierre/spectre-preview",
     "format": "pnpm dprint fmt -- 'src/**/*.ts'",

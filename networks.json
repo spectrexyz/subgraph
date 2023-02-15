@@ -1,33 +1,15 @@
 {
-  "rinkeby": {
-    "Broker": {
-      "address": "0xcc96Fc5EC76f3e33Fce37f0700AcC53259040472",
-      "startBlock": 10092658
-    },
-    "Issuer": {
-      "address": "0x1Cd0BA4F9e7DDFEf1A0Ab78642e29febdA68a2a7",
-      "startBlock": 10092657
-    },
-    "Vault": {
-      "address": "0xbf12B6f6aC465ede4bd33AA7831AcBbE0158E0cD",
-      "startBlock": 10092654
-    },
-    "BVault": {
-      "address": "0xba12222222228d8ba445958a75a0704d566bf2c8",
-      "startBlock": 9522432
-    }
-  },
   "goerli": {
     "Broker": {
-      "address": "0x6ffD69438c9Dfc35110150c5633FF6D25a9500ae",
+      "address": "0x815A827268049BcF7401C40b8CFFDe84d788925F",
       "startBlock": 7681317
     },
     "Issuer": {
-      "address": "0x93B9698EE8d5267B4AcB8DbA35467685142A2dc4",
+      "address": "0x3e753a983Ec8791cE1864A693e195A0F59812251",
       "startBlock": 7681315
     },
     "Vault": {
-      "address": "0x93E90cF507a5cc1395A3720AE3D6f279AA3BED97",
+      "address": "0xEC00E81f469B823839044564b4BA60979FB90A2D",
       "startBlock": 7681309
     },
     "BVault": {
