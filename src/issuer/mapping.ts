@@ -1,4 +1,4 @@
-import { Address } from '@graphprotocol/graph-ts';
+import { Address, BigInt } from '@graphprotocol/graph-ts';
 import {
   AcceptProposal,
   Close,
@@ -49,7 +49,14 @@ export function handleRegister(event: Register): void {
 
   _sERC20.pool = poolId;
   _sERC20.issuance = id;
-  _sERC20.price = _issuer_.priceOf(event.params.sERC20);
+
+  let priceResult = _issuer_.try_priceOf(event.params.sERC20);
+  if (priceResult.reverted) {
+    _sERC20.price = BigInt.fromI32(0);
+  } else {
+    _sERC20.price = priceResult.value;
+  }
+
   _sERC20.save();
 }
 
